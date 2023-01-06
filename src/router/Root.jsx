@@ -4,6 +4,7 @@ import Home from '../pages/home'
 import Protecter from '../pages/protecter'
 import Aboute from '../pages/exame'
 import Student from '../pages/student'
+import AdmineAuth from '../pages/admineAuth'
 
 export const Root = () => {
   return (
@@ -12,6 +13,7 @@ export const Root = () => {
             <Route path="/" element={<Protecter statuse={true}><Home/></Protecter>}/>
             <Route path="/exame" element={<Protecter statuse={true}><Aboute/></Protecter>}/>
             <Route path="/student" element={<Protecter statuse={true}><Student/></Protecter>}/>
+            <Route path="/admineAuth" element={<Protecter statuse={true}><AdmineAuth/></Protecter>}/>
         </Routes>
     </BrowserRouter>
   )
