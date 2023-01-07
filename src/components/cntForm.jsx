@@ -6,7 +6,7 @@ export const CntForm = () => {
 
   function regist(){
     if(!slecetedValue){
-      alert("Please Choose Your Authentication !");
+      alert("Please Select Your Authentication !");
     }
   }
   return (
