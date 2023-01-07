@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
-import {getDatabase, onValue, ref, set, update} from "firebase/database";
+import {child, get, getDatabase, onValue, ref, set, update} from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import { API_KEY,APP_ID, AUTH_DOMAIN, DATABASE_URL, MEASUREMENT_ID, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET } from "./static";
+import { useAuth } from "./src/context/ContextProvider";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: API_KEY,
@@ -74,10 +75,4 @@ export const  writeUserData = (collage,group,sec,ID,QZ,userId, email,mess) =>{
     });
 }
 
-export const  getStudentsData =  (route) => {
-  const users = ref(db, route);
-  let data;
-  onValue(users, (snapshot) => {
-      data =   snapshot.val();
-  });
-}
+

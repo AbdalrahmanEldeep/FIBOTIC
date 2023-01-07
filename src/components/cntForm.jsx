@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/ContextProvider';
 
 export const CntForm = () => {
   const [slecetedValue,setSelected] = useState("");
-
+  const {dispatch} = useAuth();
   function regist(){
     if(!slecetedValue){
       alert("Please Select Your Authentication !");
@@ -13,7 +14,20 @@ export const CntForm = () => {
     <form className='shadow  dark:bg-gray-700 rounded' style={{padding:"15px"}}>
         <div className="flex flex-col gap-2 items-start mb-6">
             <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Authentication</label>
-            <select onChange={({target}) => setSelected(target.value)} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select onChange={({target}) => {
+              setSelected(target.value)
+              if(target.value == "student"){
+                dispatch({
+                  type:"STD_STATUS",
+                  act:true
+                })
+              }else{
+                dispatch({
+                  type:"STD_STATUS",
+                  act:false
+                })
+              }
+            }} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option defaultValue="Authentication">Authentication</option>
                 <option value="admineAuth">Admine</option>
                 <option value="student">Student</option>
