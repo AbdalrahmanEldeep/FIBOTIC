@@ -21,6 +21,15 @@ export const StdForm = () => {
 
 
 
+    useEffect(() => {
+        return () =>{
+            dispatch({
+                type:"STD_STATUS",
+                act:false
+            })
+        }
+    })
+
 
   function groupHandeler({target}) {
     if(COL.current.value == "Collage"){
@@ -35,8 +44,8 @@ export const StdForm = () => {
                     type:"ADD_SEC",
                     sec:snapshot.val()
                 })
-            } else {
-            console.log("No data available");
+            }else {
+                console.log("No data available");
             }
         }).catch((error) => {
             console.error(error);
