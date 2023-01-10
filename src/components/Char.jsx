@@ -16,7 +16,7 @@ ChartJS.register(
 
 
 const dt = {
-    labels: ['Done Quizzes', 'Not Done', 'Quezzes Numbers'],
+    labels: ['Done Quizzes', 'Not Done Quizzes', 'Numbers of Quezzes'],
     datasets: [{
       label: "Students",
       backgroundColor: ['#8e4ad3','#5e94db',"#ffd194"],

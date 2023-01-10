@@ -17,6 +17,7 @@ const Container = styled.div`
   height: 100%;
   display: grid;
   padding-top: 100px;
+  margin-bottom: 40px;
   grid-template-columns: repeat(3, 1fr);
   @media screen and (min-width: 200px) and (max-width: 976px) {
     grid-template-columns: 1fr;
@@ -118,7 +119,6 @@ export default function Users() {
             <CardInfo>
               <p>Numbers of Quizes</p>
               <p>339</p>
-              <span>it's done from 30% from student</span>
             </CardInfo>
           </Card>
         </Container>
