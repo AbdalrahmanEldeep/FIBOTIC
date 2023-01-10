@@ -1,7 +1,9 @@
 import React from 'react'
+import GAuth from '../components/GAuth'
+
 
 export default function AdmineAuth() {
   return (
-    <div className='text-white'>Admine</div>
+    <GAuth dirction="admine"/>
   )
 }

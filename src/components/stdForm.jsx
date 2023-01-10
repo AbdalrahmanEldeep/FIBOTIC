@@ -28,7 +28,7 @@ export const StdForm = () => {
                 act:false
             })
         }
-    })
+    },[])
 
 
   function groupHandeler({target}) {
@@ -140,7 +140,7 @@ export const StdForm = () => {
                 <label htmlFor="SEC" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Section</label>
                 <select onChange={(e) => IDHandeler(e)} ref={SEC} id="SEC" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option defaultValue="Section">Section</option>
-                    ${Object.keys(users.sections ? users.sections : [] ).map((e) => {
+                    ${Object.keys(users.sections ? users.sections :{"wait...":"null"}).map((e) => {
                       return <option defaultValue={e} key={e}>{e}</option> 
                     })}
                 </select>
@@ -149,7 +149,7 @@ export const StdForm = () => {
                 <label htmlFor="IDS" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Section</label>
                 <select ref={IDES} id="IDS" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option defaultValue="Section">ID</option>
-                    ${Object.keys(users.IDS ? users.IDS : [] ).map((e) => {
+                    ${Object.keys(users.IDS ? users.IDS : {"wait...":"null"} ).map((e) => {
                       return <option defaultValue={e} key={e}>{e}</option> 
                     })}
                 </select>

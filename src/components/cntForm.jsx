@@ -10,7 +10,7 @@ export const CntForm = () => {
     if(!slecetedValue){
       alert("Please Select Your Authentication !");
     }else{
-      navigate(`${slecetedValue}/login`)
+      navigate(`${slecetedValue}/login`);
     }
   }
   return (

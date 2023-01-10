@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
-import {child, get, getDatabase, onValue, ref, set, update} from "firebase/database";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set} from "firebase/database";
+import { getAuth} from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 import { API_KEY,APP_ID, AUTH_DOMAIN, DATABASE_URL, MEASUREMENT_ID, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET } from "./static";
-import { useAuth } from "./src/context/ContextProvider";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: API_KEY,
@@ -14,7 +14,6 @@ const firebaseConfig = {
     appId: APP_ID,
     measurementId: MEASUREMENT_ID,
     databaseURL: DATABASE_URL,
-
   };
 
 
@@ -25,40 +24,12 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
+export const auth = getAuth(app);
+
+// Initialize Cloud Storage and get a reference to the service
+export const storage = getStorage(app);
 
 
-
-
-// signInWithEmailAndPassword(auth, "abdo.eslam2022@gmail.com", "1234567")
-//   .then((userCredential) => {
-//     // Signed in 
-//     const user = userCredential.user;
-//     console.log(user);
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-// });
-
-
-
-// export const Auth = () => {
-//   return signInWithEmailAndPassword(auth, "320220091@ejsut.edu.eg", "320220091")
-//   .then((userCredential) => {
-//     // Signed in 
-//     const user = userCredential.user;
-//     console.log(user);
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.log(errorMessage);
-// });
-
-// }
 
 export const  writeUserData = (collage,group,sec,ID,QZ,userId, email,mess) =>{
     set(ref(db, `users/${collage}/${group}/${sec}/${ID}/"info"`), {
