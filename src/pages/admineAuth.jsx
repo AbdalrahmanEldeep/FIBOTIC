@@ -4,6 +4,6 @@ import GAuth from '../components/GAuth'
 
 export default function AdmineAuth() {
   return (
-    <GAuth dirction="admine"/>
+    <GAuth dirction="admine" URL_STATUS="adm"/>
   )
 }

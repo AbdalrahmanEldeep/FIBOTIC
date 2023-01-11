@@ -26,6 +26,8 @@ export const FLEX = styled.div`
 `
 
 export const AsideRes = styled.div`
+    max-width: 280px;
+    height: 100vh;
   @media screen and (min-width:200px) and (max-width:676px){
     position: fixed;
     transition: left ease .4s;
@@ -33,6 +35,7 @@ export const AsideRes = styled.div`
     left: ${prop => prop.left};
     z-index: 1000;
     top: 0;
+    height: 100%;
   }
 `
 export const BtnToggler = styled.div`

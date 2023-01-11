@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseEvents';
 
-export default function GAuth({dirction}) {
+export default function GAuth({dirction,URL_STATUS}) {
     const EM = useRef();
     const PS = useRef();
     const {dispatch,std_status} = useAuth();
@@ -25,7 +25,7 @@ export default function GAuth({dirction}) {
             signInWithEmailAndPassword(auth, EM.current.value, PS.current.value)
             .then((userCredential) => {
                 const user = userCredential.user;
-                if(user.email.startsWith("admine")){
+                if(user.email.startsWith("admine") && URL_STATUS != "std"){
                     dispatch({
                         type:"ADM_STATUS",
                         act:true
@@ -34,7 +34,8 @@ export default function GAuth({dirction}) {
                         type:"STD_STATUS",
                         act:false
                     })  
-                }else{
+                }
+                if(!user.email.startsWith("admine") && URL_STATUS == "std"){
                     dispatch({
                         type:"STD_STATUS",
                         act:true

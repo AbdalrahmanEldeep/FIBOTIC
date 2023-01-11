@@ -12,6 +12,7 @@ import AdminePage from '../pages/admine'
 import Users from '../pages/users'
 import { FLEX } from '../global/Styles'
 import { Aside } from '../components/Aside'
+import AdmineQuiz from "../pages/admineQuiz"
 
 export const Root = () => {
   const {users} = useAuth();
@@ -25,6 +26,7 @@ export const Root = () => {
             <Route path="student" element={<Protecter statuse={users.std_status}><SAuth/></Protecter>}/>
             <Route  path="/admine" element={<Protecter statuse={users.adm_status}><AdminePage/></Protecter>}/>
             <Route path='/admine/stdgraph' element={<Protecter statuse={users.adm_status}><FLEX><Aside/><Users/></FLEX></Protecter>}/>
+            <Route path='/admine/stdquizzes' element={<Protecter statuse={users.adm_status}><FLEX><Aside/><AdmineQuiz/></FLEX></Protecter>}/>
             <Route path="admineAuth/login" element={users.adm_status ? <Navigate to={"/admine"}/> : <Protecter statuse={true}><AdmineAuth/></Protecter>}/>
         </Routes>
     </BrowserRouter>

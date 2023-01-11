@@ -6,13 +6,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 export const Aside = () => {
   const [asideResStatus,setAsideStatus] = useState(false);
   return (
-   <AsideRes left={asideResStatus ? "0" : "-100%"}>
+   <AsideRes className='dark:bg-gray-800' left={asideResStatus ? "0" : "-100%"}>
     <BtnToggler className='text-white' onClick={() => setAsideStatus(!asideResStatus)}><SortSharpIcon fontSize='large'/></BtnToggler>
-      <aside className="w-64" aria-label="Sidebar">
-         <div className=" overflow-y-auto  bg-gray-50 dark:bg-gray-800"  style={{height:"100vh"}}>
+      <aside className="w-full" aria-label="Sidebar">
+         <div className=" overflow-y-auto  bg-gray-50 dark:bg-gray-800">
          <div className='pb-24  bg-white text-gray-900'  style={{marginBottom:"50px"}}>
-            <a href="#" className="">
-               <span className=" text-center p-2 w-full block font-bold text-xl">FIBOTIC-ADMINE</span>
+            <a href="#" className="w-full bg-gray-500 ">
+               <span className=" text-center p-2 block font-bold text-xl">FIBOTIC-ADMINE</span>
             </a>
          </div>
             <ul className="space-y-2 px-3 py-4">
