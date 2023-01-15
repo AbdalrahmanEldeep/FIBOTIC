@@ -3,6 +3,7 @@ export const customState = {
     IDS:null,
     std_status:false,
     adm_status:false,
+    filesData:[],
 }
 
 export const dbController = (state=customState,action) => {
@@ -15,6 +16,8 @@ export const dbController = (state=customState,action) => {
             return {...state,std_status:action.act}
         case "ADM_STATUS":
             return {...state,adm_status:action.act}
+        case "FILES_DATA_SETER":
+            return {...state,filesData:[...state.filesData,action.data]}
         default :
             return state;            
     }
