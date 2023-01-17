@@ -11,7 +11,7 @@ export default function Upload({children}) {
   const [percent, setPercent] = useState(100); // Handle file upload event and update state
   const INP = useRef();
   const [status,setStatus] = useState("");
-  const {dispatch} = useAuth();
+  const {users,dispatch} = useAuth();
 
 
 
@@ -22,7 +22,7 @@ export default function Upload({children}) {
   const handleUpload = () => {
 
     if (!file) {
-      alert("Please upload an image first!");
+      alert("Please Select Your File First !");
     }else{
 
       const storageRef = ref(storage, `/Quezes/${file.name}`); // progress can be paused and resumed. It also exposes progress updates. // Receives the storage reference and the file to upload.
@@ -42,13 +42,16 @@ export default function Upload({children}) {
             (metadata) => {
               // Metadata now contains the metadata for 'images/forest.jpg'
             //   setFilesData(arr => [...arr,{name:metadata.name}])
-              getDownloadURL(uploadTask.snapshot.ref).then((url) =>{
+            getDownloadURL(uploadTask.snapshot.ref).then((url) =>{
+              if(!users.filesData.some((e) => e.fileName.includes(metadata.name))){
                   dispatch({
-                      type:"FILES_DATA_SETER",
-                      data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
-                  })
-              })
-
+                    type:"FILES_DATA_SETER",
+                    data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
+                })
+              }else{
+                alert("This is file Exist !");
+              }
+            })
             }
           );
         }

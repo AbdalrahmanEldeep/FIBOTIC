@@ -5,8 +5,6 @@ import { useAuth } from '../context/ContextProvider';
 export const StdForm = () => {
     const [email,setEmail] = useState("");
     const EM = useRef();
-    const [id,setId] = useState("");
-    const ID = useRef();
     const [group,setGroup] = useState("");
     const GR = useRef();
     const [section,setSection] = useState("");
@@ -56,15 +54,11 @@ export const StdForm = () => {
   function send(e){
     e.preventDefault();
     const regexEmailPattern = /^[a-z/.]+@ejust.edu.eg$/g;
-    const regexIDPattern = /3202+[1-9]/;
 
 
     if(!regexEmailPattern.test(EM.current.value)){
         setWorng("Please Enter Valid Email not contain numbers ending with @ejust.edu.eg")
         EM.current.focus();
-    }else if(!regexIDPattern.test(ID.current.value)){
-        setWorng("Please Enter Valid ID not contain Crracters Starting with 32021-32022")
-        ID.current.focus();
     }else if(COL.current.value == "Collage"){
         setWorng("Please Select Your Collage")
     }else if(GR.current.value =="Group"){
@@ -78,7 +72,6 @@ export const StdForm = () => {
     }else{
         setWorng("");
         setEmail(EM.current.value);
-        setId(ID.current.value);
         setGroup(GR.current.value);
         setSection(SEC.current.value);
         setCollage(COL.current.value);
@@ -114,10 +107,6 @@ export const StdForm = () => {
             <div className="mb-6">
                 <label htmlFor="email" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                 <input ref={EM} type="email" id="email" className="w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@ejust.edu.eg"  />
-            </div>
-            <div className="mb-6">
-                <label htmlFor="stdid" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Your ID</label>
-                <input ref={ID} type="number" id="stdid" placeholder='32022xxxx' className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"  />
             </div>
             <div className="flex flex-col gap-2 items-start mb-6">
                 <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Collage</label>

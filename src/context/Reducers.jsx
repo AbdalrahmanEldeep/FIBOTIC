@@ -6,6 +6,9 @@ export const customState = {
     filesData:[],
 }
 
+
+
+
 export const dbController = (state=customState,action) => {
     switch(action.type){
         case "ADD_SEC":
@@ -18,6 +21,8 @@ export const dbController = (state=customState,action) => {
             return {...state,adm_status:action.act}
         case "FILES_DATA_SETER":
             return {...state,filesData:[...state.filesData,action.data]}
+        case "FILES_DATA_DELETER":
+            return {...state,filesData:action.data}
         default :
             return state;            
     }

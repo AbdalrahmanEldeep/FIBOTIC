@@ -39,14 +39,13 @@ const Container = styled.div`
 
 export const Dirctores = () => {
 
-
+  const listRef = ref(storage, "Quezes/");
   const {users,dispatch} = useAuth();
 
 
 
   function ListData(){
     // Create a reference under which you want to list
-    const listRef = ref(storage, "Quezes/");
 
     // Find all the prefixes and items.
     listAll(listRef)
@@ -58,15 +57,15 @@ export const Dirctores = () => {
         res.items.forEach((itemRef) => {
           // All the items under listRef.
           getMetadata(ref(storage, itemRef._location.path_)).then(
-            (metadata) => {
-             if(users.filesData.length <= 0){
-                getDownloadURL(ref(storage,itemRef._location.path_)).then((url) =>{
-                    dispatch({
-                        type:"FILES_DATA_SETER",
-                        data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
-                    })
-                })
-            }
+              (metadata) => {
+                if(users.filesData.length == 0){
+                    getDownloadURL(ref(storage,itemRef._location.path_)).then((url) =>{
+                      dispatch({
+                          type:"FILES_DATA_SETER",
+                          data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
+                      })
+                  })
+                }
             }
           );
         });
@@ -79,16 +78,56 @@ export const Dirctores = () => {
 
   useEffect(() => {
     ListData();
-  }, []);
+  },[]);
 
 
-  function DeleteFile({target},location){
-    // Delete the file
-    deleteObject(ref(storage,location)).then(() => {
-    }).catch((error) => {
-        // Uh-oh, an error occurred!
+  function DeleteFile({target},location,fileName){
+      if(confirm(`You Will Delete ${fileName}`)){
+        deleteObject(ref(storage,location)).then(() => {
+          dispatch({
+            type:"FILES_DATA_DELETER",
+            data:users.filesData.filter((e) => e.fileLocation != location)
+        })
+        }).catch((error) => {
+            // Uh-oh, an error occurred!
+        });
+      }
+}
+
+
+function formatter(){
+  listAll(listRef)
+  .then((res) => {
+    res.prefixes.forEach((folderRef) => {
+      // All the prefixes under listRef.
+      // You may call listAll() recursively on them.
     });
-  }
+    res.items.forEach((itemRef) => {
+      // All the items under listRef.
+      
+      if(confirm("You Will Delete All Quizzes")){
+          getMetadata(ref(storage, itemRef._location.path_)).then(
+            (metadata) => {
+              deleteObject(ref(storage,itemRef._location.path_)).then(() => {
+                dispatch({
+                  type:"FILES_DATA_DELETER",
+                  data:[]
+              })
+              }).catch((error) => {
+                  // Uh-oh, an error occurred!
+            });
+          }
+        );
+      }
+
+    });
+  })
+  .catch((error) => {
+    // Uh-oh, an error occurred!
+  });
+
+
+}
   
   return (
     <Container>
@@ -100,7 +139,7 @@ export const Dirctores = () => {
           <Table.HeadCell>Size</Table.HeadCell>
           <Table.HeadCell>From</Table.HeadCell>
           <Table.HeadCell>
-            <button className="text-red-500">
+            <button className="text-red-500" onClick={formatter}>
               <DeleteIcon />
             </button>
           </Table.HeadCell>
@@ -134,7 +173,7 @@ export const Dirctores = () => {
                     <Table.Cell>{(data.size/1000).toFixed(2)} KB</Table.Cell>
                     <Table.Cell>{data.type}</Table.Cell>
                     <Table.Cell>
-                    <button onClick={(e) => DeleteFile(e,data.fileLocation)} className="text-red-500">
+                    <button onClick={(e) => DeleteFile(e,data.fileLocation,data.fileName)} className="text-red-500">
                         <DeleteIcon />
                     </button>
                     </Table.Cell>
