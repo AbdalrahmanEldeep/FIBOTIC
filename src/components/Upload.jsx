@@ -4,6 +4,9 @@ import { getDownloadURL, getMetadata, ref, uploadBytesResumable} from "firebase/
 import React from "react";
 import { storage } from "../../firebaseEvents";
 import { useAuth } from "../context/ContextProvider";
+import { toast } from "react-toastify";
+
+
 
 export default function Upload({children}) {
   // State to store uploaded file
@@ -19,8 +22,8 @@ export default function Upload({children}) {
     setFile(target.files[0]);
   }
 
-  const handleUpload = () => {
 
+  const handleUpload = () => {
     if (!file) {
       alert("Please Select Your File First !");
     }else{
@@ -34,7 +37,6 @@ export default function Upload({children}) {
           setPercent(percent);
           setFile("");
           INP.current.value="";
-          setStatus("Done");
         },
         (err) => console.log(err),
         () => {
@@ -48,8 +50,29 @@ export default function Upload({children}) {
                     type:"FILES_DATA_SETER",
                     data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
                 })
+                toast.success('Appended Successfully', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "succuss",
+                  className:"custom-style-toast",
+                });
               }else{
-                alert("This is file Exist !");
+                toast.warn('This is file Exist !', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  className:"custom-style-toast custom-style-toast-warn",
+                });
               }
             })
             }
@@ -60,10 +83,15 @@ export default function Upload({children}) {
     
   };
   return (
-    <div className="flex items-center bg-green-500 pr-4 w-auto rounded gap-2">
-      <input ref={INP} type="file" onChange={handleChange} accept="/image/*" className="text-white"/>
-      <button className="text-white" onClick={handleUpload}>{children}</button>
-      {percent < 100 ?  <p style={{color:"yellow"}}>{percent} % pross</p> : <p className="text-gray-900">{status}</p>}
-    </div>
+    <>
+      <div className="flex items-center bg-green-500 pr-4 w-auto rounded gap-2">
+        <input ref={INP} type="file" onChange={handleChange} accept="/image/*" className="text-white"/>
+        <button className="text-white" onClick={handleUpload}>{children}</button>
+        <button onClick={() => writeUserData("asd","ASdsad",false,"ASdasd")}>test</button>
+        {percent < 100 ?  <p style={{color:"yellow"}}>{percent} % pross</p> : null}
+      </div>
+    </>
+
   );
 }
+

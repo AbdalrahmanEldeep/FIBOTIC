@@ -16,6 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Upload from "./Upload";
 import { storage } from "../../firebaseEvents";
 import { useAuth } from "../context/ContextProvider";
+import { toast} from "react-toastify";
 
 // import { storage } from '../../firebaseEvents';
 
@@ -82,12 +83,24 @@ export const Dirctores = () => {
 
 
   function DeleteFile({target},location,fileName){
-      if(confirm(`You Will Delete ${fileName}`)){
+    let conf = confirm(`You Will Delete ${fileName}`)
+      if(conf){
         deleteObject(ref(storage,location)).then(() => {
           dispatch({
             type:"FILES_DATA_DELETER",
             data:users.filesData.filter((e) => e.fileLocation != location)
-        })
+          })
+          toast('Deleted Successfully', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            className:"custom-style-toast custom-style-toast-success",
+          });
         }).catch((error) => {
             // Uh-oh, an error occurred!
         });
@@ -95,7 +108,7 @@ export const Dirctores = () => {
 }
 
 
-function formatter(){
+function formatter(e){
   listAll(listRef)
   .then((res) => {
     res.prefixes.forEach((folderRef) => {
@@ -104,15 +117,26 @@ function formatter(){
     });
     res.items.forEach((itemRef) => {
       // All the items under listRef.
-      
-      if(confirm("You Will Delete All Quizzes")){
+    let conf = confirm("You Will Delete All Quizzes");
+      if(conf){
           getMetadata(ref(storage, itemRef._location.path_)).then(
             (metadata) => {
               deleteObject(ref(storage,itemRef._location.path_)).then(() => {
                 dispatch({
                   type:"FILES_DATA_DELETER",
                   data:[]
-              })
+                 })
+                 toast.success(' All Items Deleted Successfully', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  className:"custom-style-toast custom-style-toast-success",
+                });
               }).catch((error) => {
                   // Uh-oh, an error occurred!
             });
@@ -138,8 +162,9 @@ function formatter(){
           <Table.HeadCell>Last Update</Table.HeadCell>
           <Table.HeadCell>Size</Table.HeadCell>
           <Table.HeadCell>From</Table.HeadCell>
+          
           <Table.HeadCell>
-            <button className="text-red-500" onClick={formatter}>
+            <button className="text-red-500" onClick={(e) => formatter(e)}>
               <DeleteIcon />
             </button>
           </Table.HeadCell>
