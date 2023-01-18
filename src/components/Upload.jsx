@@ -27,58 +27,63 @@ export default function Upload({children}) {
     if (!file) {
       alert("Please Select Your File First !");
     }else{
+      if(! users.filesData.some((e) => e.fileName == file.name)){
 
-      const storageRef = ref(storage, `/Quezes/${file.name}`); // progress can be paused and resumed. It also exposes progress updates. // Receives the storage reference and the file to upload.
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100); // update progress
-          setPercent(percent);
-          setFile("");
-          INP.current.value="";
-        },
-        (err) => console.log(err),
-        () => {
-          getMetadata(uploadTask.snapshot.ref).then(
-            (metadata) => {
-              // Metadata now contains the metadata for 'images/forest.jpg'
-            //   setFilesData(arr => [...arr,{name:metadata.name}])
-            getDownloadURL(uploadTask.snapshot.ref).then((url) =>{
-              if(!users.filesData.some((e) => e.fileName.includes(metadata.name))){
-                  dispatch({
-                    type:"FILES_DATA_SETER",
-                    data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
-                })
-                toast.success('Appended Successfully', {
-                  position: "top-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "succuss",
-                  className:"custom-style-toast",
-                });
-              }else{
-                toast.warn('This is file Exist !', {
-                  position: "top-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "dark",
-                  className:"custom-style-toast custom-style-toast-warn",
-                });
+        const storageRef = ref(storage, `/Quezes/${file.name}`); // progress can be paused and resumed. It also exposes progress updates. // Receives the storage reference and the file to upload.
+        const uploadTask = uploadBytesResumable(storageRef, file);
+     
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100); // update progress
+            setPercent(percent);
+            setFile("");
+            INP.current.value="";
+          },
+          (err) => console.log(err),
+          () => {
+            getMetadata(uploadTask.snapshot.ref).then(
+              (metadata) => {
+                // Metadata now contains the metadata for 'images/forest.jpg'
+              //   setFilesData(arr => [...arr,{name:metadata.name}])
+              getDownloadURL(uploadTask.snapshot.ref).then((url) =>{
+                if(!users.filesData.some((e) => e.fileName.includes(metadata.name))){
+                    dispatch({
+                      type:"FILES_DATA_SETER",
+                      data:{fileName:metadata.name,fileLocation:metadata.fullPath,filePath:url,lastUpdated:metadata.updated.slice(0,10),size:metadata.size,id:metadata.generation,type:metadata.type}
+                  })
+                  toast.success('Appended Successfully', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "succuss",
+                    className:"custom-style-toast",
+                  });
+                }
+              })
               }
-            })
-            }
-          );
-        }
-      );
+            );
+          }
+        );
+      }else{
+        toast.warn('This is file Exist !', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          className:"custom-style-toast custom-style-toast-warn",
+        });
+        setFile("");
+        INP.current.value="";
+      }
     }
     
   };
@@ -87,8 +92,7 @@ export default function Upload({children}) {
       <div className="flex items-center bg-green-500 pr-4 w-auto rounded gap-2">
         <input ref={INP} type="file" onChange={handleChange} accept="/image/*" className="text-white"/>
         <button className="text-white" onClick={handleUpload}>{children}</button>
-        <button onClick={() => writeUserData("asd","ASdsad",false,"ASdasd")}>test</button>
-        {percent < 100 ?  <p style={{color:"yellow"}}>{percent} % pross</p> : null}
+        {percent < 100 ?  <p style={{color:"yellow"}}>{percent} %</p> : null}
       </div>
     </>
 

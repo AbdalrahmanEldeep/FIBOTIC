@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set} from "firebase/database";
+import { getDatabase, get, ref, remove, set, child} from "firebase/database";
 import { getAuth} from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
@@ -44,6 +44,24 @@ export const  writeUserData = (collage,group,sec,ID,QZ,userId, email,mess) =>{
       mess:mess,
       degree:null
     });
+    set(ref(db, `users/CSITS1/Quezzes`), {
+      email: email,
+      id: userId,
+      mess:mess,
+      degree:null
+    });
+}
+
+export const  writeQuezzesData = (name,activity,path,src) =>{
+  set(ref(db, `users/CSITS1/Quezzes/${path}`), {
+    "name":name,
+    "src":src,
+    "activity":activity
+  });
+}
+
+export const removeQuezze = (id='') => {
+  remove(ref(db,`users/CSITS1/Quezzes/${id}`))
 }
 
 
