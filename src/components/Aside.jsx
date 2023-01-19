@@ -3,19 +3,15 @@ import { Link } from 'react-router-dom'
 import SortSharpIcon from '@mui/icons-material/SortSharp';
 import { AsideRes, BtnToggler } from '../global/Styles'
 import LogoutIcon from '@mui/icons-material/Logout';
+import LOGO from "/E-JUST_logo.png"
 export const Aside = () => {
   const [asideResStatus,setAsideStatus] = useState(false);
   return (
    <AsideRes className='dark:bg-gray-800' left={asideResStatus ? "0" : "-100%"}>
     <BtnToggler className='text-white' onClick={() => setAsideStatus(!asideResStatus)}><SortSharpIcon fontSize='large'/></BtnToggler>
-      <aside className="w-full" aria-label="Sidebar">
-         <div className=" overflow-y-auto  bg-gray-50 dark:bg-gray-800">
-         <div className='pb-24  bg-white text-gray-900'  style={{marginBottom:"50px"}}>
-            <a href="#" className="w-full bg-gray-500 ">
-               <span className=" text-center p-2 block font-bold text-xl">FIBOTIC-ADMINE</span>
-            </a>
-         </div>
-            <ul className="space-y-2 px-3 py-4">
+      <aside className="w-full flex flex-col justify-between h-full" aria-label="Sidebar">
+         <div className=" overflow-y-auto dark:bg-gray-500">
+            <ul className="mt-4 space-y-2 px-3 py-4">
                <li>
                   <Link to="/admine/student" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                      <svg aria-hidden="true" className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
@@ -50,8 +46,12 @@ export const Aside = () => {
                </li>
             </ul>
          </div>
+         <div className='text-center text-gray-900'>
+            <a href="#" className="w-full  bg-gray-500 ">
+               <span className=" text-center text-white flex items-center gap-2 p-4 font-bold text-xl bg"><img style={{width:"40px"}} src={LOGO} alt="" />Ejust</span>
+            </a>
+         </div>
       </aside>
-
    </AsideRes>
 
   )

@@ -15,6 +15,7 @@ import Upload from "./Upload";
 import { removeQuezze, storage, writeQuezzesData } from "../../firebaseEvents";
 import { useAuth } from "../context/ContextProvider";
 import { toast } from "react-toastify";
+import { getDatabase,child, get,ref as dbRef, onValue } from "firebase/database";
 
 
 // import { storage } from '../../firebaseEvents';
@@ -40,10 +41,31 @@ const Container = styled.div`
 export const Dirctores = () => {
   const listRef = ref(storage, "Quezes/");
   const { users, dispatch } = useAuth();
+  const [status,setStatus] = useState([]);
 
 
-  const QActivity = ({target},{fileName,id,filePath}) =>{
+  const QActivity = ({target},{fileName,id,filePath},i) =>{
     writeQuezzesData(fileName.replace(/\.[^/.]+$/, ""),target.checked,id,filePath);
+    QUpdataStatus(id,i);
+  }
+
+  const QUpdataStatus = (id,i) =>{
+      const db = getDatabase();
+      const starCountRef = dbRef(db,`users/CSITS1/Quezzes/${id}`);
+      onValue(starCountRef, (snapshot) => {
+            try{
+              let data = snapshot.val().activity;  
+              if(status.length == 0){
+                setStatus((arr) => Array.from( new Set([...arr,{[id]:data}])));
+              }else{
+                let newArray = [...status];
+                newArray[i] = {[id]:data};
+                setStatus(newArray);
+              }  
+            }catch(e){
+              console.log(e);
+            }
+      });
   }
 
   function ListData() {
@@ -72,9 +94,10 @@ export const Dirctores = () => {
                         lastUpdated: metadata.updated.slice(0, 10),
                         size: metadata.size,
                         id: metadata.generation,
-                        type: metadata.type,
+                        type: metadata.type,        
                       },
                     });
+                    QUpdataStatus(metadata.generation);
                   }
                 );
               }
@@ -87,8 +110,14 @@ export const Dirctores = () => {
       });
   }
 
+
   useEffect(() => {
     ListData();
+     if(status.length < users.filesData.length){
+        users.filesData.forEach((e,i) => {
+          QUpdataStatus(e.id,i);
+      })
+     }
   }, []);
 
   function DeleteFile({ target }, {fileLocation,fileName,id}) {
@@ -100,6 +129,7 @@ export const Dirctores = () => {
             type: "FILES_DATA_DELETER",
             data: users.filesData.filter((e) => e.fileLocation != fileLocation),
           });
+          setStatus(status.filter((e) => !Object.hasOwn(e,id)))
           toast("Deleted Successfully", {
             position: "top-right",
             autoClose: 2000,
@@ -139,6 +169,7 @@ export const Dirctores = () => {
                       data: [],
                     });
                     removeQuezze();
+                    setStatus([]);
                     toast.success(" All Items Deleted Successfully", {
                       position: "top-right",
                       autoClose: 2000,
@@ -164,8 +195,16 @@ export const Dirctores = () => {
         // Uh-oh, an error occurred!
       });
   }
-  function checkStatus(){
+
+  function checkState(i,data){
+    if(status[i]){
+      return status[i][data.id];
+    }else{
+      return false;
+    }
+
   }
+
 
   return (
     <Container>
@@ -192,7 +231,7 @@ export const Dirctores = () => {
         </Table.Head>
         <Table.Body className="divide-y bg-gray-700">
           {!users.filesData.length == 0 ? (
-            users.filesData.map((data) => (
+            users.filesData.map((data,i) => (
               <Table.Row
                 key={data.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -203,8 +242,8 @@ export const Dirctores = () => {
                       id="purple-checkbox"
                       type="checkbox"
                       value=""
-                      checked={checkStatus()}
-                      onChange={(e) => QActivity(e,data)}
+                      checked={checkState(i,data)}
+                      onChange={(e) => QActivity(e,data,i)}
                       className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                   </div>

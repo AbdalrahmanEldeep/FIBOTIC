@@ -60,6 +60,9 @@ export const  writeQuezzesData = (name,activity,path,src) =>{
   });
 }
 
+
+
+
 export const removeQuezze = (id='') => {
   remove(ref(db,`users/CSITS1/Quezzes/${id}`))
 }
