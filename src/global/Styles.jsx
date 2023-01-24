@@ -50,3 +50,10 @@ export const BtnToggler = styled.div`
     display: block;
   }
 `
+export const SelectBox = styled.div`
+  @media screen and (max-width:600px) {
+    height:400px;
+    overflow-y:auto;
+  }
+  
+`
