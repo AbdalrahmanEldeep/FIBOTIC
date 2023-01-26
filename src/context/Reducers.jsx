@@ -29,6 +29,8 @@ export const dbController = (state=customState,action) => {
             return {...state,filesData:action.data}
         case "SET_STD_DATA":
             return {...state,studentData:action.data}
+        case "UPD_STD_DATA":
+            return {...state,studentData:{...state.studentData,...action.data}}
         default :
             return state;            
     }

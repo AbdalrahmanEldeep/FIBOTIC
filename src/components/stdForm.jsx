@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export const StdForm = () => {
   const navigator = useNavigate();
+  const { users, dispatch } = useAuth();
   const [email, setEmail] = useState("");
   const EM = useRef();
   const [group, setGroup] = useState("");
@@ -20,7 +21,6 @@ export const StdForm = () => {
   const QUZS = useRef();
   const [quezzes, setQueze] = useState("");
   const [worng, setWorng] = useState("");
-  const { users, dispatch } = useAuth();
 
   useEffect(() => {
     return () => {
@@ -138,7 +138,6 @@ export const StdForm = () => {
   function send(e) {
     e.preventDefault();
     const regexEmailPattern = /^[a-z/.]+@ejust.edu.eg$/g;
-
     if (!regexEmailPattern.test(EM.current.value)) {
       setWorng(
         "Please Enter Valid Email not contain numbers ending with @ejust.edu.eg"
@@ -301,7 +300,7 @@ export const StdForm = () => {
                 return (
                   <option
                     key={users.QZS[e].src}
-                    value={users.QZS[e].activity ? users.QZS[e].src : ""}
+                    value={users.QZS[e].activity ? [users.QZS[e].src,users.QZS[e].name] : ""}
                     disabled={!users.QZS[e].activity}
                   >
                     {users.QZS[e].name}

@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useCallback } from "react";
 import CodeMirror from '@uiw/react-codemirror';
 import { langs } from '@uiw/codemirror-extensions-langs';
-import { dracula } from "@uiw/codemirror-themes-all";
+import { xcodeDark } from "@uiw/codemirror-themes-all";
+import { useAuth } from "../context/ContextProvider";
 
 export const TextEditor = () => {
-  const onChange = React.useCallback((value, viewUpdate) => {
-    console.log("value:", value);
+  const { users, dispatch } = useAuth();
+
+  const onChange = useCallback((value, viewUpdate) => {
+    dispatch({
+      type: "UPD_STD_DATA",
+      data:{value:value}
+    });
   }, []);
   return (
     <CodeMirror
@@ -13,7 +19,7 @@ export const TextEditor = () => {
       height="100%"
       extensions={[langs.cpp()]}
       onChange={onChange}
-      theme={dracula}
+      theme={xcodeDark}
     />
   );
 };

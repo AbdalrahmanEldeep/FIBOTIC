@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, get, ref, remove, set, child} from "firebase/database";
+import { getDatabase, get, ref, remove, set, child, update} from "firebase/database";
 import { getAuth} from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
@@ -31,32 +31,18 @@ export const storage = getStorage(app);
 
 
 
-export const  writeUserData = (collage,group,sec,ID,QZ,userId, email,mess) =>{
-    set(ref(db, `users/${collage}/${group}/${sec}/${ID}/"info"`), {
-      email: email,
-      id: userId,
-      mess:mess,
-      degree:null
-    });
-    set(ref(db, `users/${collage}/${group}/${sec}/${ID}/"quezes"/${QZ}`), {
-      email: email,
-      id: userId,
-      mess:mess,
-      degree:null
-    });
-    set(ref(db, `users/CSITS1/Quezzes`), {
-      email: email,
-      id: userId,
-      mess:mess,
-      degree:null
-    });
+export const  writeUserData = (collage,group,sec,ID,name,data) =>{
+   const updates = {};
+   updates[`users/${collage}/${group}/${sec}/${ID}/${name}`] = [data];
+   update(ref(db), updates);
 }
 
-export const  writeQuezzesData = (name,activity,path,src) =>{
+export const  writeQuezzesData = (name,activity,path,src,timer) =>{
   set(ref(db, `users/CSITS1/Quezzes/${path}`), {
     "name":name,
     "src":src,
-    "activity":activity
+    "activity":activity,
+    "timer":timer
   });
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useRef } from 'react';
 import styled from 'styled-components';
+import { writeUserData } from '../../firebaseEvents';
 import { TextEditor } from '../components/TextEditor';
 import { useAuth } from '../context/ContextProvider';
 import { BTNBOX, Button } from './quizInfo';
@@ -52,29 +53,20 @@ const QuizBox = styled.div`
 export default function Exam() {
   const { users, dispatch } = useAuth();
   const container = useRef();
+  const [src,name] = users.studentData.quezeName.split(",");
+
 
   useEffect(() => {
     dispatch({
         type: "STD_STATUS",
         act: true,
     });
-
-    addEventListener('fullscreenchange', (event) => {
-      if (document.fullscreenElement) {
-        console.log(`Element: ${document.fullscreenElement.id} entered fullscreen mode.`);
-      } else {
-        dispatch({
-          type: "STD_STATUS",
-          act: false,
-      });
-      }
-    });
-    
-    if(container.current.requestFullscreen) {
-      container.current.requestFullscreen();
-    }
-
   }, []);
+
+  const Finish = () =>{
+    const {collage,group,section,id} = users.studentData;
+    writeUserData(collage,group,section,id,name,{...users.studentData,mark:0});
+  }
 
 
   return (
@@ -85,7 +77,7 @@ export default function Exam() {
           <p style={{color:"#fff",fontWeight:"700"}}>Ejust</p>
         </div>
         <BTNBOX g="30px">
-          <Button bg="#F1C40F" color="#111827">
+          <Button bg="#F1C40F" color="#111827" onClick={Finish}>
               Finish
           </Button>
           <Button bg="#fff" br="1px solid #F1C40F" color="#111827">
@@ -98,7 +90,7 @@ export default function Exam() {
           <TextEditor/>
         </CodeBox>
         <QuizBox>
-           <iframe src={users.studentData.quezeName}></iframe>
+           <iframe src={src}></iframe>
         </QuizBox>
       </View>
     </Container>
